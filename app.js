@@ -23,7 +23,7 @@ bot.on('message', function(event) {
     var msg = event.message.text;
     var reply = '';
 
-    if (msg.includes('立誠') && (msg.includes('女朋友') || msg.includes('女朋友')) {
+    if (msg.includes('立誠') && (msg.includes('女朋友') || msg.includes('女友'))) {
       reply = '是指這位婆婆嗎？\n https://v.qq.com/x/page/s0126ru656q.html';
     }
 
