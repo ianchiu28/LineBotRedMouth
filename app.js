@@ -18,6 +18,21 @@ var bot = linebot({
 
 bot.on('message', function(event) {
   console.log(event);
+
+  if (event.message.type == 'text') {
+    var msg = event.message.text;
+    var reply;
+
+    if (msg.indexOf('女朋友') != 1 || msg.indexOf('女友') != 1) {
+      reply = '是指這位婆婆嗎？\n https://v.gg.com/x/page/s0126ru656g.html';
+    }
+
+    event.reply(reply).then(function(data) {
+      console.log(reply);
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
 });
 
 var app = express();
