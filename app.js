@@ -1,3 +1,4 @@
+var linebot = require('linebot');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -9,6 +10,12 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+var bot = linebot({
+  channelId: 1567360579,
+  channelSecret: '4c4c3f42667878edac146cb810f4c939',
+  channelAccessToken: 'foiJFyfZY1i2N3W4vKaxZamM5wZF1BHyyWRBf5z/PAzpRU+gk4R1FXR1gJCQFOTFx1mUqymJBbfDNKe3u7Ai5AH/QK0/97Y9k3Cwa6cgevjYy7YXP0zpfjEhDtGUWKp8GCHGdOaB5tWOuDj2tUPpkgdB04t89/1O/w1cDnyilFU='
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -41,6 +48,18 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+bot.on('message', function(event){
+  console.log(event);
+});
+
+var linebotParser = bot.parser();
+app.post('/', linebotParser);
+
+var server = app.listen(process.env.PORT || 8080, function() {
+  var port = server.address().port;
+  console.log('App now running on port', port);
 });
 
 module.exports = app;
