@@ -13,8 +13,8 @@ var users = require('./routes/users');
 var app = express();
 
 var config = {
-  channelAccessToken: process.env.CHANNEL_SECRET,
-  channelSecret: process.env.CHANNEL_ACCESS_TOKEN
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.CHANNEL_SECRET
 };
 
 // view engine setup
