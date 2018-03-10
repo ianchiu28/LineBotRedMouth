@@ -24,7 +24,7 @@ bot.on('message', function(event) {
 
 var app = express();
 var linebotParser = bot.parser();
-app.post('/', linebotParser);
+app.post('/webhook', linebotParser);
 
 /*var config = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
