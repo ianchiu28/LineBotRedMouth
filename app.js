@@ -24,7 +24,7 @@ bot.on('message', function(event) {
     var reply;
 
     if (msg.indexOf('女朋友') != 1 || msg.indexOf('女友') != 1) {
-      reply = '是指這位婆婆嗎？\n https://v.gg.com/x/page/s0126ru656g.html';
+      reply = '是指這位婆婆嗎？\n https://v.qq.com/x/page/s0126ru656q.html';
     }
 
     event.reply(reply).then(function(data) {
