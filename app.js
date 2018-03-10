@@ -17,10 +17,6 @@ var config = {
   channelSecret: process.env.CHANNEL_ACCESS_TOKEN
 };
 
-app.post('/webhook', middleware(config), function(req, res){
-  res.json(req.body.events);
-});
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -54,6 +50,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.post('/webhook', middleware(config), function(req, res){
+  res.json(req.body.events);
 });
 
 var server = app.listen(process.env.PORT || 80, function() {
