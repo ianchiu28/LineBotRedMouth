@@ -54,6 +54,7 @@ app.use(function(err, req, res, next) {
 });*/
 
 app.post('/webhook', middleware(config), function(req, res){
+  console.log(req.body.events);
   res.json(req.body.events);
 });
 
