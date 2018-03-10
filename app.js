@@ -12,9 +12,9 @@ var users = require('./routes/users');
 var app = express();
 
 var bot = linebot({
-  channelId: 1567360579,
-  channelSecret: '4c4c3f42667878edac146cb810f4c939',
-  channelAccessToken: 'foiJFyfZY1i2N3W4vKaxZamM5wZF1BHyyWRBf5z/PAzpRU+gk4R1FXR1gJCQFOTFx1mUqymJBbfDNKe3u7Ai5AH/QK0/97Y9k3Cwa6cgevjYy7YXP0zpfjEhDtGUWKp8GCHGdOaB5tWOuDj2tUPpkgdB04t89/1O/w1cDnyilFU='
+  channelId: process.env.CHANNEL_ID,
+  channelSecret: process.env.CHANNEL_SECRET,
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 });
 
 // view engine setup
