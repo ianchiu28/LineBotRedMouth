@@ -23,17 +23,9 @@ bot.on('message', function(event) {
     var msg = event.message.text;
     var reply = '';
 
-    console.log('~~~~~~~');
-    console.log(msg);
-    //console.log(msg.indexOf('女朋友'));
-
-    if (msg.includes('女朋友')) {
-      reply = '!!';
-    }
-
-    /*if (msg.indexOf('b') !== 1 || msg.indexOf('a') !== 1) {
+    if (msg.includes('立誠') && (msg.includes('女朋友') || msg.includes('女朋友')) {
       reply = '是指這位婆婆嗎？\n https://v.qq.com/x/page/s0126ru656q.html';
-    }*/
+    }
 
     event.reply(reply).then(function(data) {
       console.log(reply);
