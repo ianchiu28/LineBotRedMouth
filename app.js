@@ -21,8 +21,9 @@ bot.on('message', function(event) {
 
   if (event.message.type == 'text') {
     var msg = event.message.text;
-    var reply = "";
+    var reply = '';
 
+    console.log('～~~~~~~~');
     console.log(msg);
     console.log(msg.indexOf('女朋友'));
 
