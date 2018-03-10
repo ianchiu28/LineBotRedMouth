@@ -1,4 +1,3 @@
-var linebot = require('linebot');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -8,14 +7,9 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var webhook = require('./routes/webhook');
 
 var app = express();
-
-var bot = linebot({
-  channelId: process.env.CHANNEL_ID,
-  channelSecret: process.env.CHANNEL_SECRET,
-  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/webhook', webhook);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -50,20 +45,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-bot.on('message', function(event) {
-  event.reply(event.message.text).then(function (data) {
-    // success
-    console.log('$$ Success $$', data);
-  }).catch(function (error) {
-    // error
-    console.log('$$ Error $$', error);
-  });
-});
-
-var linebotParser = bot.parser();
-app.post('/linewebhook', linebotParser);
-
-var server = app.listen(process.env.PORT || 8080, function() {
+var server = app.listen(process.env.PORT || 80, function() {
   var port = server.address().port;
   console.log('App now running on port', port);
 });
