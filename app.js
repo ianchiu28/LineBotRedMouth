@@ -1,9 +1,12 @@
+import { CLIENT_RENEG_LIMIT } from 'tls';
+
 var express = require('express');
 /*--var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');--*/
+var linebot = require('linebot');
 var line = require('@line/bot-sdk');
 var middleware = require('@line/bot-sdk').middleware;
 
@@ -11,12 +14,24 @@ var middleware = require('@line/bot-sdk').middleware;
 var users = require('./routes/users');--*/
 //--var webhook = require('./routes/webhook');
 
-var app = express();
+var bot = linebot({
+  channelId: process.env.CHANNEL_ID,
+  channelSecret: process.env.CHANNEL_SECRET,
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
+});
 
-var config = {
+bot.on('message', function(event) {
+  console.log(event);
+});
+
+var app = express();
+var linebotParser = bot.parser();
+app.post('/', linebotParser);
+
+/*var config = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET
-};
+};*/
 
 // view engine setup
 /*--app.set('views', path.join(__dirname, 'views'));
@@ -52,10 +67,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });--*/
 
-app.post('/webhook', middleware(config), function(req, res){
+/*app.post('/webhook', middleware(config), function(req, res){
   console.log(req.body.events);
   res.json(req.body.events);
-});
+});*/
 
 var server = app.listen(process.env.PORT || 80, function() {
   var port = server.address().port;
