@@ -50,8 +50,14 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-bot.on('message', function(event){
-  console.log(event);
+bot.on('message', function(event) {
+  event.reply(event.message.text).then(function (data) {
+    // success
+    console.log('$$ Success $$', data);
+  }).catch(function (error) {
+    // error
+    console.log('$$ Error $$', error);
+  });
 });
 
 var linebotParser = bot.parser();
