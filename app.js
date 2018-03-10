@@ -27,7 +27,7 @@ bot.on('message', function(event) {
     console.log(msg);
     //console.log(msg.indexOf('女朋友'));
 
-    if (msg.includes('a')) {
+    if (msg.includes('女朋友')) {
       reply = '!!';
     }
 
