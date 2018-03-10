@@ -5,8 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');--*/
 var linebot = require('linebot');
-var line = require('@line/bot-sdk');
-var middleware = require('@line/bot-sdk').middleware;
 
 /*--var index = require('./routes/index');
 var users = require('./routes/users');--*/
@@ -25,11 +23,6 @@ bot.on('message', function(event) {
 var app = express();
 var linebotParser = bot.parser();
 app.post('/webhook', linebotParser);
-
-/*var config = {
-  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
-  channelSecret: process.env.CHANNEL_SECRET
-};*/
 
 // view engine setup
 /*--app.set('views', path.join(__dirname, 'views'));
@@ -64,11 +57,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });--*/
-
-/*app.post('/webhook', middleware(config), function(req, res){
-  console.log(req.body.events);
-  res.json(req.body.events);
-});*/
 
 var server = app.listen(process.env.PORT || 80, function() {
   var port = server.address().port;
