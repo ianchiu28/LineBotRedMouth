@@ -21,9 +21,9 @@ bot.on('message', function(event) {
 
   if (event.message.type == 'text') {
     var msg = event.message.text;
-    var reply;
+    var reply = "";
 
-    if (msg.indexOf('女朋友') != 1 || msg.indexOf('女友') != 1) {
+    if (msg.indexOf('女朋友') !== 1 || msg.indexOf('女友') !== 1) {
       reply = '是指這位婆婆嗎？\n https://v.qq.com/x/page/s0126ru656q.html';
     }
 
