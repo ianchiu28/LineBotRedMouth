@@ -61,7 +61,7 @@ bot.on('message', function(event) {
 });
 
 var linebotParser = bot.parser();
-app.post('/', linebotParser);
+app.post('/linewebhook', linebotParser);
 
 var server = app.listen(process.env.PORT || 8080, function() {
   var port = server.address().port;
