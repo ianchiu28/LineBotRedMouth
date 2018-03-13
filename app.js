@@ -43,11 +43,16 @@ app.post('/webhook', linebotParser);
 var { Pool } = require('pg');
 
 var pool = new Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL  
 });
 
 app.get('/db', (req, res) => {
-  pool.query('SELECT * FROM users WHERE id = 1', (err, res) => {
+  var sql = 'create table id not exists "learningReply" (' + 
+    '"id" serial primary key,' + 
+    '"channelId" varchar(100) default null' + 
+    '"keyord" varchar(100) default null,' +
+    '"reply" varchar(100) default null';
+  pool.query(sql, (err, res) => {
     if (err) {
       throw err;
     }
