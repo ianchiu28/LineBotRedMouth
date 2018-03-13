@@ -46,7 +46,7 @@ var pool = new Pool({
   connectionString: process.env.DATABASE_URL  
 });
 
-app.get('/dbcreate', (req, res) => {
+app.get('/db/create', (req, res) => {
   var sql = 'create table if not exists learningReply (' + 
     'id serial primary key,' + 
     'channelId varchar(100) default null,' + 
@@ -62,7 +62,19 @@ app.get('/dbcreate', (req, res) => {
   });
 });
 
-app.get('/dbinsert', (req, res) => {
+app.get('/db/drop', (req, res) => {
+  var sql = 'drop table learningReply;';
+  pool.query(sql, (err, results) => {
+    if (err) {
+      throw err;
+    }
+
+    console.log(results);
+    res.json(results);
+  });
+});
+
+app.get('/db/insert', (req, res) => {
   var sql = "insert into learningReply (channelId, keyword, reply) values ('ABCD', 'AAA', 'CCC');";
   pool.query(sql, (err, results) => {
     if (err) {
@@ -74,25 +86,13 @@ app.get('/dbinsert', (req, res) => {
   });
 });
 
-app.get('/db', (req, res) => {
+app.get('/db/select', (req, res) => {
   var sql = 'select * from learningReply;';
   pool.query(sql, (err, results) => {
     if (err) {
       throw err;
     }
     
-    console.log(results);
-    res.json(results);
-  });
-});
-
-app.get('/dbdelete', (req, res) => {
-  var sql = 'drop table learningReply;';
-  pool.query(sql, (err, results) => {
-    if (err) {
-      throw err;
-    }
-
     console.log(results);
     res.json(results);
   });
