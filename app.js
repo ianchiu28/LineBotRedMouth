@@ -63,7 +63,7 @@ app.get('/dbcreate', (req, res) => {
 });
 
 app.get('/dbinsert', (req, res) => {
-  var sql = 'insert into learningReply (channelId, keyword, reply) values ("ABCD", "AAA", "CCC");';
+  var sql = "insert into learningReply (channelId, keyword, reply) values ('ABCD', 'AAA', 'CCC');";
   pool.query(sql, (err, results) => {
     if (err) {
       throw err;
