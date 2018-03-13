@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');--*/
 var linebot = require('linebot');
+var pg = require('pg');
 
 /*--var index = require('./routes/index');
 var users = require('./routes/users');--*/
@@ -38,6 +39,20 @@ bot.on('message', function(event) {
 var app = express();
 var linebotParser = bot.parser();
 app.post('/webhook', linebotParser);
+
+app.get('/db', function (req, res) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query('SELECT * FROM test_table', function (err, result) {
+      done();
+      if (err) {
+        console.error(err);
+        res.send("Error " + err);
+      } else {
+        res.send("Success");
+      }
+    });
+  });
+});
 
 // view engine setup
 /*--app.set('views', path.join(__dirname, 'views'));
