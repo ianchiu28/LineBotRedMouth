@@ -50,7 +50,7 @@ app.get('/dbcreate', (req, res) => {
   var sql = 'create table if not exists "learningReply" (' + 
     '"id" serial primary key,' + 
     '"channelId" varchar(100) default null,' + 
-    '"keyord" varchar(100) default null,' +
+    '"keyword" varchar(100) default null,' +
     '"reply" varchar(100) default null);';
   pool.query(sql, (err, results) => {
     if (err) {
@@ -80,6 +80,18 @@ app.get('/db', (req, res) => {
       throw err;
     }
     
+    console.log(results);
+    res.json(results);
+  });
+});
+
+app.get('dbdelete', (req, res) => {
+  var sql = 'drop table learningReply;';
+  pool.query(sql, (err, results) => {
+    if (err) {
+      throw err;
+    }
+
     console.log(results);
     res.json(results);
   });
