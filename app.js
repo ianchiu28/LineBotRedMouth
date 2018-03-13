@@ -49,9 +49,9 @@ var pool = new Pool({
 app.get('/db', (req, res) => {
   var sql = 'create table if not exists "learningReply" (' + 
     '"id" serial primary key,' + 
-    '"channelId" varchar(100) default null' + 
+    '"channelId" varchar(100) default null,' + 
     '"keyord" varchar(100) default null,' +
-    '"reply" varchar(100) default null';
+    '"reply" varchar(100) default null);';
   pool.query(sql, (err, res) => {
     if (err) {
       throw err;
