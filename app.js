@@ -62,13 +62,14 @@ app.get('/dbcreate', (req, res) => {
 });
 
 app.get('/dbinsert', (req, res) => {
-  var sql = 'insert into "learningReply" values ("0001", "123", "456");';
+  var sql = 'insert into "learningReply" ("channelId", "keyword", "reply") values ("0001", "123", "456");';
   pool.query(sql, (err, results) => {
     if (err) {
       throw err;
     }
 
     console.log(results);
+    res.json(results);
   });
 });
 
@@ -80,6 +81,7 @@ app.get('/db', (req, res) => {
     }
     
     console.log(results);
+    res.json(results);
   });
 });
 
