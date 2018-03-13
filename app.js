@@ -52,12 +52,34 @@ app.get('/dbcreate', (req, res) => {
     '"channelId" varchar(100) default null,' + 
     '"keyord" varchar(100) default null,' +
     '"reply" varchar(100) default null);';
-  pool.query(sql, (err, res) => {
+  pool.query(sql, (err, results) => {
     if (err) {
       throw err;
     }
 
-    console.log(res);
+    console.log(results);
+  });
+});
+
+app.get('/dbinsert', (req, res) => {
+  var sql = 'insert into "learningReply" values ("0001", "123", "456");';
+  pool.query(sql, (err, results) => {
+    if (err) {
+      throw err;
+    }
+
+    console.log(results);
+  });
+});
+
+app.get('/db', (req, res) => {
+  var sql = 'select * from "learningReply";';
+  pool.query(sql, (err, results) => {
+    if (err) {
+      throw err;
+    }
+    
+    console.log(results);
   });
 });
 
