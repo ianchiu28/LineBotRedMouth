@@ -47,7 +47,7 @@ var pool = new Pool({
 });
 
 app.get('/db', (req, res) => {
-  var sql = 'create table id not exists "learningReply" (' + 
+  var sql = 'create table if not exists "learningReply" (' + 
     '"id" serial primary key,' + 
     '"channelId" varchar(100) default null' + 
     '"keyord" varchar(100) default null,' +
@@ -57,7 +57,7 @@ app.get('/db', (req, res) => {
       throw err;
     }
 
-    console.log('user:', res.rows[0]);
+    console.log(res);
   });
 });
 
