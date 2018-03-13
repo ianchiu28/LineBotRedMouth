@@ -85,7 +85,7 @@ app.get('/db', (req, res) => {
   });
 });
 
-app.get('dbdelete', (req, res) => {
+app.get('/dbdelete', (req, res) => {
   var sql = 'drop table "learningReply";';
   pool.query(sql, (err, results) => {
     if (err) {
