@@ -46,7 +46,7 @@ var pool = new Pool({
   connectionString: process.env.DATABASE_URL  
 });
 
-app.get('/db', (req, res) => {
+app.get('/dbcreate', (req, res) => {
   var sql = 'create table if not exists "learningReply" (' + 
     '"id" serial primary key,' + 
     '"channelId" varchar(100) default null,' + 
