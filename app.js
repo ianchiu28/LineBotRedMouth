@@ -41,7 +41,6 @@ bot.on('message', function(event) {
       }
 
       console.log(results);
-      res.json(results);
     });
 
 
