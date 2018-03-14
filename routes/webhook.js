@@ -9,6 +9,15 @@ var bot = linebot({
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 });
 
+// database
+var {
+    Pool
+} = require('pg');
+
+var pool = new Pool({
+    connectionString: process.env.DATABASE_URL
+});
+
 bot.on('message', function (event) {
     console.log('event:\n', event);
 
