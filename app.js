@@ -54,7 +54,7 @@ bot.on('message', function (event) {
         } else {
           // update
           var id = results.rows[0].id;
-          sqlLearning = "update learning set reply = $1 where id = $2;";
+          sqlLearning = "update learningReply set reply = $1 where id = $2;";
           param = [learnReply, id];
         }
 
