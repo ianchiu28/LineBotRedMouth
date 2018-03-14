@@ -17,7 +17,7 @@ var bot = linebot({
 });
 
 bot.on('message', function(event) {
-  console.log(event);
+  console.log('event:\n', event);
 
   if (event.message.type == 'text') {
 
@@ -31,7 +31,6 @@ bot.on('message', function(event) {
 
     // get message
     var msg = event.message.text;
-    var reply = '';
 
     // search from database
     var sql = "select reply from learningReply where channelId = $1 and $2 like '%' || keyword || '%';";
@@ -40,7 +39,14 @@ bot.on('message', function(event) {
         throw err;        
       }
 
-      console.log(results);
+      console.log('result:\n', results);
+      var reply = results.rows[0].reply;
+
+      event.reply(reply).then(function(data) {
+        console.log(reply);
+      }).catch(function(error) {
+        console.log(error);
+      });
     });
 
 
