@@ -98,7 +98,7 @@ bot.on('message', function (event) {
 
 var app = express();
 var linebotParser = bot.parser();
-app.post('/webhook', linebotParser);
+app.post('/webhook2', linebotParser);
 
 // database
 var {
@@ -175,7 +175,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);*/
-app.use('/webhook2', webhook);
+app.use('/webhook', webhook);
 
 // catch 404 and forward to error handler
 /*--app.use(function(req, res, next) {
