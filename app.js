@@ -20,18 +20,40 @@ bot.on('message', function(event) {
   console.log(event);
 
   if (event.message.type == 'text') {
+
+    // get channel id
+    var channelId;
+    if (typeof event.source.groupId !== 'undefined') {
+      channelId = event.source.groupId;
+    } else {
+      channelId = event.source.userId;
+    }
+
+    // get message
     var msg = event.message.text;
     var reply = '';
 
-    if (msg.includes('立誠') && (msg.includes('女朋友') || msg.includes('女友'))) {
-      reply = '是指這位婆婆嗎？\n https://v.qq.com/x/page/s0126ru656q.html';
-    }
+    // search from database
+    var sql = "select reply from learningReply where channelId = $1 and $2 like '%' || keyword || '%';";
+    pool.query(sql, [channelId, msg], (err, results) => {
+      if (err) {
+        throw err;        
+      }
 
-    event.reply(reply).then(function(data) {
+      console.log(results);
+      res.json(results);
+    });
+
+
+    /*if (msg.includes('立誠') && (msg.includes('女朋友') || msg.includes('女友'))) {
+      reply = '是指這位婆婆嗎？\n https://v.qq.com/x/page/s0126ru656q.html';
+    }*/
+
+    /*event.reply(reply).then(function(data) {
       console.log(reply);
     }).catch(function(error) {
       console.log(error);
-    });
+    });*/
   }
 });
 
