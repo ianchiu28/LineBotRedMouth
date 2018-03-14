@@ -96,7 +96,7 @@ app.get('/db/drop', (req, res) => {
 });
 
 app.get('/db/insert', (req, res) => {
-  var sql = "insert into learningReply (channelId, keyword, reply) values ('ABCD', 'AAA', 'CCC');";
+  var sql = "insert into learningReply (channelId, keyword, reply) values ('Ud1fee6b0ec91cc378fb893d3f922eb9e', 'AAA', 'CCC');";
   pool.query(sql, (err, results) => {
     if (err) {
       throw err;
