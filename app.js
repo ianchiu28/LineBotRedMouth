@@ -81,14 +81,16 @@ bot.on('message', function (event) {
           throw err;
         }
 
-        console.log('result:\n', results);
-        var reply = results.rows[0].reply;
+        if (results.rowCount !== 0) {
+          console.log('result:\n', results);
+          var reply = results.rows[0].reply;
 
-        event.reply(reply).then((data) => {
-          console.log(reply);
-        }).catch((error) => {
-          console.log(error);
-        });
+          event.reply(reply).then((data) => {
+            console.log(reply);
+          }).catch((error) => {
+            console.log(error);
+          });
+        }
       });
     }
 
