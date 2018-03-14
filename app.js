@@ -16,7 +16,7 @@ var bot = linebot({
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 });
 
-bot.on('message', function(event) {
+bot.on('message', function (event) {
   console.log('event:\n', event);
 
   if (event.message.type == 'text') {
@@ -32,23 +32,65 @@ bot.on('message', function(event) {
     // get message
     var msg = event.message.text;
 
-    // search from database
-    var sql = "select reply from learningReply where channelId = $1 and $2 like '%' || keyword || '%';";
-    pool.query(sql, [channelId, msg], (err, results) => {
-      if (err) {
-        throw err;        
-      }
+    // judge learning or reply
+    if (msg.substring(0, 5) == '紅嘴學說話' || msg.substring(0, 5) == '嘴嘴學說話') {
+      // learning
 
-      console.log('result:\n', results);
-      var reply = results.rows[0].reply;
+      msg = msg.split(';');
+      var learnKeyword = msg[1];
+      var learnReply = msg[2];
 
-      event.reply(reply).then(function(data) {
-        console.log(reply);
-      }).catch(function(error) {
-        console.log(error);
+      var sqlLearning = "select id from learningReply where channelId = $1 and keyword = $2;";
+      pool.query(sqlLearning, [channelId, learnKeyword], (err, results) => {
+        if (err) {
+          throw err;
+        }
+
+        var param = [];
+        if (results.rows.length == 0) {
+          // insert
+          sqlLearning = "insert into learningReply (channelId, keyword, reply) values ($1, $2, $3);";
+          param = [channelId, learnKeyword, learnReply];
+        } else {
+          // update
+          var id = results.rows[0].id;
+          sqlLearning = "update learning set reply = $1 where id = $2;";
+          param = [learnReply, id];
+        }
+
+        pool.query(sqlLearning, param, (err, results) => {
+          if (err) {
+            throw err;
+          }
+
+          var reply = '好唷～';
+          event.reply(reply).then((data) => {
+            console.log(reply);
+          }).catch((err) => {
+            console.log(err);
+          });
+        });
       });
-    });
+    } else {
+      // reply
 
+      // search from database
+      var sqlReply = "select reply from learningReply where channelId = $1 and $2 like '%' || keyword || '%';";
+      pool.query(sqlReply, [channelId, msg], (err, results) => {
+        if (err) {
+          throw err;
+        }
+
+        console.log('result:\n', results);
+        var reply = results.rows[0].reply;
+
+        event.reply(reply).then((data) => {
+          console.log(reply);
+        }).catch((error) => {
+          console.log(error);
+        });
+      });
+    }
 
     /*if (msg.includes('立誠') && (msg.includes('女朋友') || msg.includes('女友'))) {
       reply = '是指這位婆婆嗎？\n https://v.qq.com/x/page/s0126ru656q.html';
@@ -67,16 +109,18 @@ var linebotParser = bot.parser();
 app.post('/webhook', linebotParser);
 
 // database
-var { Pool } = require('pg');
+var {
+  Pool
+} = require('pg');
 
 var pool = new Pool({
-  connectionString: process.env.DATABASE_URL  
+  connectionString: process.env.DATABASE_URL
 });
 
 app.get('/db/create', (req, res) => {
-  var sql = 'create table if not exists learningReply (' + 
-    'id serial primary key,' + 
-    'channelId varchar(100) default null,' + 
+  var sql = 'create table if not exists learningReply (' +
+    'id serial primary key,' +
+    'channelId varchar(100) default null,' +
     'keyword varchar(100) default null,' +
     'reply varchar(100) default null);';
   pool.query(sql, (err, results) => {
@@ -119,7 +163,7 @@ app.get('/db/select', (req, res) => {
     if (err) {
       throw err;
     }
-    
+
     console.log(results);
     res.json(results);
   });
@@ -159,7 +203,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });--*/
 
-var server = app.listen(process.env.PORT || 80, function() {
+var server = app.listen(process.env.PORT || 80, function () {
   var port = server.address().port;
   console.log('App now running on port', port);
 });
