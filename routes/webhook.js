@@ -56,15 +56,7 @@ bot.on('message', function (event) {
                 });
             });
         } else {
-            // reply
-            var reply = RedMouthReply(channelId, message);
-            console.log('@@', reply);
-
-            event.reply(reply).then((data) => {
-                console.log(reply);
-            }).catch((error) => {
-                console.log(error);
-            });
+            var reply = RedMouthReply(event, channelId, message);
         }
     }
 });
@@ -87,7 +79,7 @@ function IsLearningString(string) {
     } else return false;
 }
 
-function RedMouthReply(channelId, message) {
+function RedMouthReply(event, channelId, message) {
     // search from database
     var sqlReply = "select reply from learningReply where channelId = $1 and $2 like '%' || keyword || '%';";
     pool.query(sqlReply, [channelId, message], (err, results) => {
@@ -97,8 +89,15 @@ function RedMouthReply(channelId, message) {
 
         if (results.rowCount !== 0) {
             console.log('result:\n', results);
-            return results.rows[0].reply;
-        } else return null;
+            var reply = results.rows[0].reply;
+
+            event.reply(reply).then((data) => {
+                console.log(reply);
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+
     });
 }
 
