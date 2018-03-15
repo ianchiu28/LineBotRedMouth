@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var pool = require('../lib/database');
 
 // line bot
 var linebot = require('linebot');
@@ -10,13 +11,13 @@ var bot = linebot({
 });
 
 // database
-var {
+/*var {
     Pool
 } = require('pg');
 
 var pool = new Pool({
     connectionString: process.env.DATABASE_URL
-});
+});*/
 
 bot.on('message', function (event) {
     console.log('event:\n', event);
