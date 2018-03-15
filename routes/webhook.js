@@ -1,3 +1,5 @@
+import { EventEmitter } from 'events';
+
 var express = require('express');
 var router = express.Router();
 var pool = require('../lib/database').pool;
@@ -71,12 +73,7 @@ function RedMouthLearning(event, channelId, message) {
                 throw err;
             }
 
-            var reply = '好唷～';
-            event.reply(reply).then((data) => {
-                console.log(reply);
-            }).catch((err) => {
-                console.log(err);
-            });
+            ReplyToUser(event, '好唷～～～');
         });
     });
 }
@@ -93,13 +90,16 @@ function RedMouthReply(event, channelId, message) {
             console.log('result:\n', results);
             var reply = results.rows[0].reply;
 
-            event.reply(reply).then((data) => {
-                console.log(reply);
-            }).catch((error) => {
-                console.log(error);
-            });
+            ReplyToUser(event, reply);
         }
+    });
+}
 
+function ReplyToUser(event, message){
+    event.reply(message).then((data) => {
+        console.log(message);
+    }).catch((error) => {
+        console.log(error);
     });
 }
 
