@@ -10,7 +10,7 @@ var bot = linebot({
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 });
 
-bot.on('message', function (event) {
+bot.on('message', (event) => {
     console.log('event:\n', event);
 
     if (event.message.type == 'text') {
@@ -18,45 +18,9 @@ bot.on('message', function (event) {
         var message = event.message.text;
 
         if (IsLearningString(message)) {
-            // learning
-
-            message = message.split(';');
-            var learnKeyword = message[1];
-            var learnReply = message[2];
-
-            var sqlLearning = "select id from learningReply where channelId = $1 and keyword = $2;";
-            pool.query(sqlLearning, [channelId, learnKeyword], (err, results) => {
-                if (err) {
-                    throw err;
-                }
-
-                var param = [];
-                if (results.rows.length == 0) {
-                    // insert
-                    sqlLearning = "insert into learningReply (channelId, keyword, reply) values ($1, $2, $3);";
-                    param = [channelId, learnKeyword, learnReply];
-                } else {
-                    // update
-                    var id = results.rows[0].id;
-                    sqlLearning = "update learningReply set reply = $1 where id = $2;";
-                    param = [learnReply, id];
-                }
-
-                pool.query(sqlLearning, param, (err, results) => {
-                    if (err) {
-                        throw err;
-                    }
-
-                    var reply = '好唷～';
-                    event.reply(reply).then((data) => {
-                        console.log(reply);
-                    }).catch((err) => {
-                        console.log(err);
-                    });
-                });
-            });
+            RedMouthLearning(event, channelId, message);
         } else {
-            var reply = RedMouthReply(event, channelId, message);
+            RedMouthReply(event, channelId, message);
         }
     }
 });
@@ -77,6 +41,44 @@ function IsLearningString(string) {
     if (string.substring(0, 5) == '紅嘴學說話' || string.substring(0, 5) == '嘴嘴學說話') {
         return true;
     } else return false;
+}
+
+function RedMouthLearning(event, channelId, message) {
+    message = message.split(';');
+    var learnKeyword = message[1];
+    var learnReply = message[2];
+
+    var sqlLearning = "select id from learningReply where channelId = $1 and keyword = $2;";
+    pool.query(sqlLearning, [channelId, learnKeyword], (err, results) => {
+        if (err) {
+            throw err;
+        }
+
+        var param = [];
+        if (results.rows.length == 0) {
+            // insert
+            sqlLearning = "insert into learningReply (channelId, keyword, reply) values ($1, $2, $3);";
+            param = [channelId, learnKeyword, learnReply];
+        } else {
+            // update
+            var id = results.rows[0].id;
+            sqlLearning = "update learningReply set reply = $1 where id = $2;";
+            param = [learnReply, id];
+        }
+
+        pool.query(sqlLearning, param, (err, results) => {
+            if (err) {
+                throw err;
+            }
+
+            var reply = '好唷～';
+            event.reply(reply).then((data) => {
+                console.log(reply);
+            }).catch((err) => {
+                console.log(err);
+            });
+        });
+    });
 }
 
 function RedMouthReply(event, channelId, message) {
