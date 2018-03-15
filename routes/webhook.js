@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var pool = require('../lib/database');
+var pool = require('../lib/database').pool;
 
 // line bot
 var linebot = require('linebot');
