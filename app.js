@@ -11,15 +11,6 @@ var webhook = require('./routes/webhook');
 
 var app = express();
 
-// database
-var {
-  Pool
-} = require('pg');
-
-var pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-});
-
 app.get('/db/create', (req, res) => {
   var sql = 'create table if not exists learningReply (' +
     'id serial primary key,' +
