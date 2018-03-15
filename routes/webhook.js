@@ -58,6 +58,7 @@ bot.on('message', function (event) {
         } else {
             // reply
             var reply = RedMouthReply(channelId, message);
+            console.log('@@', reply);
 
             event.reply(reply).then((data) => {
                 console.log(reply);
