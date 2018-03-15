@@ -14,25 +14,15 @@ bot.on('message', function (event) {
     console.log('event:\n', event);
 
     if (event.message.type == 'text') {
+        var channelId = GetChannelId(event);
+        var message = event.message.text;
 
-        // get channel id
-        var channelId;
-        if (typeof event.source.groupId !== 'undefined') {
-            channelId = event.source.groupId;
-        } else {
-            channelId = event.source.userId;
-        }
-
-        // get message
-        var msg = event.message.text;
-
-        // judge learning or reply
-        if (msg.substring(0, 5) == '紅嘴學說話' || msg.substring(0, 5) == '嘴嘴學說話') {
+        if (IsLearningString(message)) {
             // learning
 
-            msg = msg.split(';');
-            var learnKeyword = msg[1];
-            var learnReply = msg[2];
+            message = message.split(';');
+            var learnKeyword = message[1];
+            var learnReply = message[2];
 
             var sqlLearning = "select id from learningReply where channelId = $1 and keyword = $2;";
             pool.query(sqlLearning, [channelId, learnKeyword], (err, results) => {
@@ -67,24 +57,12 @@ bot.on('message', function (event) {
             });
         } else {
             // reply
+            var reply = RedMouthReply(channelId, message);
 
-            // search from database
-            var sqlReply = "select reply from learningReply where channelId = $1 and $2 like '%' || keyword || '%';";
-            pool.query(sqlReply, [channelId, msg], (err, results) => {
-                if (err) {
-                    throw err;
-                }
-
-                if (results.rowCount !== 0) {
-                    console.log('result:\n', results);
-                    var reply = results.rows[0].reply;
-
-                    event.reply(reply).then((data) => {
-                        console.log(reply);
-                    }).catch((error) => {
-                        console.log(error);
-                    });
-                }
+            event.reply(reply).then((data) => {
+                console.log(reply);
+            }).catch((error) => {
+                console.log(error);
             });
         }
     }
@@ -93,5 +71,34 @@ bot.on('message', function (event) {
 var linebotParser = bot.parser();
 
 router.post('/', linebotParser);
+
+function GetChannelId(event) {
+    if (typeof event.source.groupId !== 'undefined') {
+        return event.source.groupId;
+    } else {
+        return event.source.userId;
+    }
+}
+
+function IsLearningString(string) {
+    if (string.substring(0, 5) == '紅嘴學說話' || string.substring(0, 5) == '嘴嘴學說話') {
+        return true;
+    } else return false;
+}
+
+function RedMouthReply(channelId, message) {
+    // search from database
+    var sqlReply = "select reply from learningReply where channelId = $1 and $2 like '%' || keyword || '%';";
+    pool.query(sqlReply, [channelId, message], (err, results) => {
+        if (err) {
+            throw err;
+        }
+
+        if (results.rowCount !== 0) {
+            console.log('result:\n', results);
+            return results.rows[0].reply;
+        } else return null;
+    });
+}
 
 module.exports = router;
